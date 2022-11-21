@@ -1,0 +1,15 @@
+{
+  "name": "socket-chatroom",
+  "outputfilename": "socket-chatroom",
+  "assetdir": "frontend/dist",
+  "frontend:install": "pnpm install",
+  "frontend:build": "pnpm run build",
+  "frontend:dev:build": "pnpm run build-only",
+  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dev:serverUrl": "http://localhost:5173",
+  "debounceMS": 500,
+  "author": {
+    "name": "cyp0633",
+    "email": "cyp0633@gmail.com"
+  }
+}
