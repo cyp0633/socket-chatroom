@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { NH1, NLayout, NLayoutContent, NLayoutHeader, NLayoutSider } from 'naive-ui'
-const { t, availableLocales: languages, locale } = useI18n();
+import { NH1, NLayout, NLayoutContent, NLayoutHeader, NLayoutSider, NP } from 'naive-ui'
 import ConversationItemVue from "./components/ConversationItem.vue";
 import FromConversationVue from "./components/FromConversation.vue";
 import ToConversationVue from "./components/ToConversation.vue";
+import ConversationBubbleVue from "./components/ConversationBubble.vue";
+const { t, availableLocales: languages, locale } = useI18n();
 
 var users = [
   "Alice",
@@ -36,6 +37,9 @@ document.body.addEventListener("click", function (event) {
         <n-layout-content>
           <from-conversation-vue name="Alice" msg="Hello" />
           <to-conversation-vue name="Bob" msg="Hi" />
+          <conversation-bubble-vue class="max-w-3xl">
+            <n-p>Hi</n-p>
+          </conversation-bubble-vue>
         </n-layout-content>
       </n-layout>
     </n-layout>

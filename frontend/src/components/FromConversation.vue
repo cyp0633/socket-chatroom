@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { NAvatar, NCard } from 'naive-ui'
-defineProps<{
-    name: string;
-    msg: string;
-}>()
+interface props {
+  name: string;
+  msg: string;
+}
+const props = defineProps<props>()
 </script>
 
 <template>
