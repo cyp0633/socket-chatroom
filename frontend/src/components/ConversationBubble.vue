@@ -1,8 +1,8 @@
 <template>
     <div
-        class="mt-5 mb-5 p-2 bg-white border-solid border-gray-300 border-l border-t border-r border-b border-light-blue-500 rounded-md relative">
+        class="mt-5 mb-5 p-2 border-solid border-gray-300 border-l border-t border-r border-b border-light-blue-500 rounded-md relative">
         <div :class="{
-            'w-2.5 h-2.5 border-gray-300 bg-white transform absolute': true,
+            'w-2.5 h-2.5 border-gray-300 transform absolute': true,
             'border-l border-t rotate-45 -top-1.5 left-4': placement === 'top-start',
             'border-l border-t rotate-45 -top-1.5 inset-x-2/4 -translate-x-1.5': placement === 'top',
             'border-l border-t rotate-45 -top-1.5 right-4': placement === 'top-end',
@@ -25,6 +25,7 @@ import {
     defineComponent,
     PropType
 } from 'vue';
+import { useThemeVars } from 'naive-ui';
 
 enum EnumPlacement {
     TopStart = "top-start",
