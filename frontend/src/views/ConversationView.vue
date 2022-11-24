@@ -75,6 +75,14 @@ const msg = ref<Message[]>([
         name: "Bob",
     },
 ]);
+
+function sendMsg(message: string) {
+    msg.value.push({
+        type: "from",
+        content: message,
+        name: "Alice",
+    });
+}
 </script>
 
 <template>
@@ -89,6 +97,6 @@ const msg = ref<Message[]>([
         </div>
     </div>
     <div class="h-1/3 mx-8">
-        <send-vue />
+        <send-vue @send-msg="(n) => sendMsg(n)" />
     </div>
 </template>

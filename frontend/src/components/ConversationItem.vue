@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NAvatar } from 'naive-ui';
-defineProps<{
+const props = defineProps<{
     name: string;
 }>()
 </script>
