@@ -60,8 +60,45 @@ func DoSend(msg string, to string) {
 	}
 
 	Messages = append(Messages, Message{
-		Type:    "to",
+		Type:    "from",
 		Content: msg,
 		Name:    to,
 	})
+}
+
+var pullReplyRegex = regexp.MustCompile(`^(FROM .+ CONTENT .+\n)+END`)
+
+var fromRegex = regexp.MustCompile(`^FROM .+ CONTENT`)
+
+var contentRegex = regexp.MustCompile(`CONTENT .+\n`)
+
+func DoPull() {
+	c := *conn
+	str := "PULL"
+	_, err := c.Write([]byte(str))
+	if err != nil {
+		log.Println(err)
+	}
+
+	buf := make([]byte, 4096) // 为消息留大点 buffer
+	n, err := c.Read(buf)
+	str = string(buf[:n])
+	if err != nil || !pullReplyRegex.MatchString(str) {
+		log.Println(err)
+	}
+
+	// 解析消息
+	msg := strings.Split(str, "\n")
+	for _, m := range msg {
+		if m == "END" {
+			return
+		}
+		from := fromRegex.FindString(m)[5 : len(m)-8]
+		content := contentRegex.FindString(m)[8:]
+		Messages = append(Messages, Message{
+			Type:    "to",
+			Content: content,
+			Name:    from,
+		})
+	}
 }
