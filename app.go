@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"socket-chatroom/internal"
 )
 
 // App struct
@@ -21,6 +22,8 @@ func (a *App) startup(ctx context.Context) {
 	// Perform your setup here
 	// 在这里执行初始化设置
 	a.ctx = ctx
+	internal.Connect()
+	internal.DoHelo()
 }
 
 // domReady is called after the front-end dom has been loaded
@@ -45,4 +48,13 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 	// 在此处做一些资源释放的操作
+}
+
+func (a *App) FetchMessages() []internal.Message {
+	internal.DoPull()
+	return internal.Messages
+}
+
+func(a *App) FetchClients() []string {
+	return internal.Clients
 }
