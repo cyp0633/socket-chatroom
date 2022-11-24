@@ -45,7 +45,7 @@ export default defineComponent({
     name: 'ConversationBubble',
     props: {
         placement: {
-            type: String as PropType<EnumPlacement>,
+            type: String,
             default: 'top-start'
         }
     }
