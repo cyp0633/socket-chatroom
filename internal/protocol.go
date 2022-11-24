@@ -58,4 +58,10 @@ func DoSend(msg string, to string) {
 	if err != nil || !sendReplyRegex.MatchString(str) {
 		log.Println(err)
 	}
+
+	Messages = append(Messages, Message{
+		Type:    "to",
+		Content: msg,
+		Name:    to,
+	})
 }
