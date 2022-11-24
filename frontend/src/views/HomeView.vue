@@ -24,6 +24,7 @@ const { t } = useI18n();
         >{{ t("homepage.star-me") }}</a
       >
     </div>
+    <router-link to="/conversation/0:0:0:0">前往 Conversation</router-link>
   </div>
 </template>
 
