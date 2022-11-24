@@ -3,11 +3,15 @@ import FromConversationVue from "@/components/FromConversation.vue";
 import ToConversationVue from "@/components/ToConversation.vue";
 import SendVue from "@/components/Send.vue";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 interface Message {
     type: string;
     content: string;
     name: string;
 }
+const route = useRoute();
+const ip = route.params.ip as string;
+const name = ip.match(/[0-9]{1,3}$/)![0];
 const msg = ref<Message[]>([
     {
         type: "from",
@@ -89,10 +93,10 @@ function sendMsg(message: string) {
     <div class="h-2/3 overflow-y-scroll">
         <div v-for="message in msg" :key="message.content">
             <template v-if="message.type === 'from'">
-                <from-conversation-vue :msg="message.content" :name="message.name" />
+                <from-conversation-vue :msg="message.content" name="我" />
             </template>
             <template v-else>
-                <to-conversation-vue :msg="message.content" :name="message.name" />
+                <to-conversation-vue :msg="message.content" :name="name" />
             </template>
         </div>
     </div>
