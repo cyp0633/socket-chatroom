@@ -6,11 +6,11 @@ defineProps<{
 </script>
 
 <template>
-    <div class="grid grid-cols-2 place-content-start gap-4">
-        <div class="shrink">
+    <div class="flex flex-row m-4">
+        <div class="flex mx-2">
             <n-avatar round size="medium">{{ name }}</n-avatar>
         </div>
-        <div class="shrink">
+        <div class="flex mx-2">
             <slot>{{ name }}</slot>
         </div>
     </div>
