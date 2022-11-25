@@ -2,7 +2,8 @@
 import FromConversationVue from "@/components/FromConversation.vue";
 import ToConversationVue from "@/components/ToConversation.vue";
 import SendVue from "@/components/Send.vue";
-import { ref } from "vue";
+import { FetchMessages } from "../../wailsjs/go/main/App";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 interface Message {
     type: string;
@@ -87,6 +88,15 @@ function sendMsg(message: string) {
         name: "Alice",
     });
 }
+
+// 每五秒钟拉取消息
+onMounted(async () => {
+    // execute every 5 seconds
+    setInterval(async () => {
+        const messages = await FetchMessages(ip);
+        msg.value = messages;
+    }, 5000);
+});
 </script>
 
 <template>

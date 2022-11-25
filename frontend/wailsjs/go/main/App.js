@@ -6,6 +6,6 @@ export function FetchClients() {
   return window['go']['main']['App']['FetchClients']();
 }
 
-export function FetchMessages() {
-  return window['go']['main']['App']['FetchMessages']();
+export function FetchMessages(arg1) {
+  return window['go']['main']['App']['FetchMessages'](arg1);
 }

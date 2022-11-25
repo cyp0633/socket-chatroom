@@ -51,8 +51,13 @@ func (a *App) shutdown(ctx context.Context) {
 	internal.DoExit()
 }
 
-func (a *App) FetchMessages() []internal.Message {
-	return internal.Messages
+func (a *App) FetchMessages(ip string) (messages []internal.Message) {
+	for _, message := range internal.Messages {
+		if message.Name == ip {
+			messages = append(messages, message)
+		}
+	}
+	return
 }
 
 func (a *App) FetchClients() []string {
