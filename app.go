@@ -52,7 +52,6 @@ func (a *App) shutdown(ctx context.Context) {
 }
 
 func (a *App) FetchMessages() []internal.Message {
-	internal.DoPull()
 	return internal.Messages
 }
 
