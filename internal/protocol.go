@@ -66,7 +66,7 @@ func DoSend(msg string, to string) {
 	})
 }
 
-var pullReplyRegex = regexp.MustCompile(`^(FROM .+ CONTENT .+\n)+END`)
+var pullReplyRegex = regexp.MustCompile(`^LEN [0-9]+\n(FROM .+ CONTENT .+\n)*END`)
 
 var fromRegex = regexp.MustCompile(`^FROM .+ CONTENT`)
 
@@ -89,9 +89,9 @@ func DoPull() {
 
 	// 解析消息
 	msg := strings.Split(str, "\n")
-	for _, m := range msg {
-		if m == "END" {
-			return
+	for i, m := range msg {
+		if m == "END" || i == 0 || m == "" {
+			continue
 		}
 		from := fromRegex.FindString(m)[5 : len(m)-8]
 		content := contentRegex.FindString(m)[8:]
