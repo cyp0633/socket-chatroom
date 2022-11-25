@@ -48,6 +48,7 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 	// 在此处做一些资源释放的操作
+	internal.DoExit()
 }
 
 func (a *App) FetchMessages() []internal.Message {
@@ -55,6 +56,6 @@ func (a *App) FetchMessages() []internal.Message {
 	return internal.Messages
 }
 
-func(a *App) FetchClients() []string {
+func (a *App) FetchClients() []string {
 	return internal.Clients
 }

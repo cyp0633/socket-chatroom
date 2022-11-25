@@ -102,3 +102,24 @@ func DoPull() {
 		})
 	}
 }
+
+var exitRegex = regexp.MustCompile(`^OK`)
+
+func DoExit() {
+	c := *conn
+	str := "EXIT"
+	_, err := c.Write([]byte(str))
+	if err != nil {
+		log.Println(err)
+	}
+
+	buf := make([]byte, 1024)
+	n, err := c.Read(buf)
+	str = string(buf[:n])
+	if err != nil || !exitRegex.MatchString(str) {
+		log.Println(err)
+	}
+
+	c.Close()
+	conn = nil
+}
