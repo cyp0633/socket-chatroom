@@ -25,6 +25,8 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.3 // indirect
 	github.com/samber/lo v1.35.0 // indirect
+	github.com/seancfoley/bintree v1.1.0 // indirect
+	github.com/seancfoley/ipaddress-go v1.4.1 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
