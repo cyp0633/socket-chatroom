@@ -2,6 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { NH1, NLayout, NLayoutContent, NLayoutHeader, NLayoutSider, NP, NConfigProvider, useOsTheme, darkTheme } from 'naive-ui'
 import ConversationItemVue from "./components/ConversationItem.vue";
+import SiderVue from "./components/Sider.vue";
 const { t, availableLocales: languages, locale } = useI18n();
 
 var users = [
@@ -21,7 +22,7 @@ document.body.addEventListener("click", function (event) {
 
 <template>
 
-  <body>
+  <body class="h-screen overflow-y-hidden">
     <n-config-provider :theme="theme">
       <n-layout>
         <n-layout-header class="h-16">
@@ -31,12 +32,10 @@ document.body.addEventListener("click", function (event) {
         </n-layout-header>
         <n-layout has-sider>
           <n-layout-sider>
-            <div v-for="user in users" :key="user">
-              <conversation-item-vue :name="user" />
-            </div>
+            <sider-vue />
           </n-layout-sider>
-          <n-layout-content class="h-screen">
-            <router-view class="h-full" />
+          <n-layout-content class="h-screen overflow-y-hidden">
+            <router-view class="h-screen" />
           </n-layout-content>
         </n-layout>
       </n-layout>
