@@ -31,7 +31,7 @@ document.body.addEventListener("click", function (event) {
           </n-h1>
         </n-layout-header>
         <n-layout has-sider>
-          <n-layout-sider>
+          <n-layout-sider class="h-screen overflow-y-scroll">
             <sider-vue />
           </n-layout-sider>
           <n-layout-content class="h-screen overflow-y-hidden">
