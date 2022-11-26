@@ -1,11 +1,11 @@
 package internal
 
 import (
-	"log"
 	"net"
 	"regexp"
 	"strings"
 	"time"
+	"go.uber.org/zap"
 )
 
 var conn *net.Conn
@@ -14,7 +14,7 @@ var conn *net.Conn
 func Connect() {
 	c, err := net.DialTimeout("tcp", "localhost:65432", 2*time.Second)
 	if err != nil {
-		log.Panicln(err)
+		Logger.Panic("Failed to connect to server", zap.Error(err))
 	}
 	conn = &c
 }
@@ -26,20 +26,21 @@ func DoHelo() {
 	c := *conn
 	_, err := c.Write([]byte("HELO"))
 	if err != nil {
-		log.Println(err)
+		Logger.Error("Failed to send HELO", zap.Error(err))
 	}
 
 	buf := make([]byte, 1024)
 	n, err := c.Read(buf) // 返回其他客户端列表
 	str := string(buf[:n])
 	if err != nil || !heloReplyRegex.MatchString(str) {
-		log.Println(err)
+		Logger.Error("Failed to receive HELO reply", zap.Error(err))
 	}
 
 	clients := strings.Split(string(buf[8:n]), " ")
 	for _, client := range clients {
 		AddClient(client)
 	}
+	Logger.Info("Received client list", zap.Strings("clients", clients))
 }
 
 var sendReplyRegex = regexp.MustCompile(`^OK.+`)
@@ -49,14 +50,14 @@ func DoSend(msg string, to string) {
 	str := "SEND " + to + " MSG " + msg
 	_, err := c.Write([]byte(str))
 	if err != nil {
-		log.Println(err)
+		Logger.Error("Failed to send SEND", zap.Error(err))
 	}
 
 	buf := make([]byte, 1024)
 	n, err := c.Read(buf)
 	str = string(buf[:n])
 	if err != nil || !sendReplyRegex.MatchString(str) {
-		log.Println(err)
+		Logger.Error("Failed to receive SEND reply", zap.Error(err))
 	}
 
 	Messages = append(Messages, Message{
@@ -64,6 +65,7 @@ func DoSend(msg string, to string) {
 		Content: msg,
 		Name:    to,
 	})
+	Logger.Info("Sent message successfully", zap.String("to", to), zap.String("message", msg))
 }
 
 var pullReplyRegex = regexp.MustCompile(`^LEN [0-9]+\n(FROM .+ CONTENT .+\n)*END`)
@@ -77,14 +79,14 @@ func DoPull() {
 	str := "PULL"
 	_, err := c.Write([]byte(str))
 	if err != nil {
-		log.Println(err)
+		Logger.Error("Failed to send PULL", zap.Error(err))
 	}
 
 	buf := make([]byte, 4096) // 为消息留大点 buffer
 	n, err := c.Read(buf)
 	str = string(buf[:n])
 	if err != nil || !pullReplyRegex.MatchString(str) {
-		log.Println(err)
+		Logger.Error("Failed to receive PULL reply", zap.Error(err))
 	}
 
 	// 解析消息
@@ -100,6 +102,7 @@ func DoPull() {
 			Content: content,
 			Name:    from,
 		})
+		Logger.Info("Received message", zap.String("from", from), zap.String("message", content))
 	}
 }
 
@@ -110,16 +113,17 @@ func DoExit() {
 	str := "EXIT"
 	_, err := c.Write([]byte(str))
 	if err != nil {
-		log.Println(err)
+		Logger.Error("Failed to send EXIT", zap.Error(err))
 	}
 
 	buf := make([]byte, 1024)
 	n, err := c.Read(buf)
 	str = string(buf[:n])
 	if err != nil || !exitRegex.MatchString(str) {
-		log.Println(err)
+		Logger.Error("Failed to receive EXIT reply", zap.Error(err))
 	}
 
 	c.Close()
+	Logger.Info("Closed connection")
 	conn = nil
 }

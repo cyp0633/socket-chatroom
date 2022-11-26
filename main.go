@@ -2,7 +2,7 @@ package main
 
 import (
 	"embed"
-	"log"
+	"socket-chatroom/internal"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -11,6 +11,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/linux"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
+	"go.uber.org/zap"
 )
 
 //go:embed frontend/dist
@@ -93,6 +94,6 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		internal.Logger.Error("Error starting app", zap.Error(err))
 	}
 }
