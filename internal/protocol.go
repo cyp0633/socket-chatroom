@@ -12,8 +12,11 @@ import (
 var conn *net.Conn
 
 // 尝试连接服务器
-func Connect() {
-	c, err := net.DialTimeout("tcp", "localhost:65432", 2*time.Second)
+func Connect(ip string) {
+	if ip == "" {
+		ip = "127.0.0.1"
+	}
+	c, err := net.DialTimeout("tcp", ip+":65432", 2*time.Second)
 	if err != nil {
 		Logger.Panic("Failed to connect to server", zap.Error(err))
 	}
@@ -110,6 +113,10 @@ func DoPull() {
 var exitRegex = regexp.MustCompile(`^OK`)
 
 func DoExit() {
+	if conn == nil {
+		Logger.Info("Trying to connect a closed connection")
+		return
+	}
 	c := *conn
 	str := "EXIT"
 	_, err := c.Write([]byte(str))

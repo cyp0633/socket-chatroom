@@ -22,8 +22,8 @@ func (a *App) startup(ctx context.Context) {
 	// Perform your setup here
 	// 在这里执行初始化设置
 	a.ctx = ctx
-	internal.Connect()
-	internal.DoHelo()
+	// internal.Connect("")
+	// internal.DoHelo()
 }
 
 // domReady is called after the front-end dom has been loaded
@@ -67,4 +67,10 @@ func (a *App) FetchClients() []string {
 
 func (a *App) SendMessage(to string, content string) {
 	internal.DoSend(content, to)
+}
+
+func (a *App) SetIP(ip string) {
+	internal.DoExit()
+	internal.Connect(ip)
+	internal.DoHelo()
 }

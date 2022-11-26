@@ -1,77 +1,24 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { ref } from "vue";
+import { NInput, NButton, useMessage,NH1,NP,NA } from "naive-ui";
+import { SetIP } from "../../wailsjs/go/main/App";
 
-import HelloWorld from "@/components/HelloWorld.vue";
+const serverIP = ref("")
+const message = useMessage()
 
-const { t } = useI18n();
+function setIP() {
+  SetIP(serverIP.value)
+  console.log("Trying to set server IP", serverIP.value);
+  message.success("设置成功")
+}
 </script>
 
 <template>
-  <div class="home">
-    <!-- Logo -->
-    <img class="logo" alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld :msg="t('homepage.welcome')" />
-    <!-- Bottom button -->
-    <div class="link">
-      <a
-        href="https://wails.io/docs/gettingstarted/installation"
-        class="btn start"
-        >{{ t("homepage.getting-started") }}</a
-      >
-      <a
-        href="https://github.com/misitebao/wails-template-vue"
-        class="btn star"
-        >{{ t("homepage.star-me") }}</a
-      >
+    <div class="w-1/3 absolute left-1/2 top-1/2 mt-20 translate-x-[-50%] translate-y-[-50%] justify-center">
+      <n-h1>请设定服务器 IP 地址</n-h1>
+      <n-input v-model:value="serverIP" type="text" placeholder="服务器地址" />
+      <div class="h-3" />
+      <n-button secondary type="primary" @click="setIP()">设定</n-button>
+      <n-p>by @cyp0633, <n-a href="https://github.com/cyp0633/socket-chatroom">GitHub</n-a></n-p>
     </div>
-    <router-link to="/conversation/0:0:0:0">前往 Conversation</router-link>
-  </div>
 </template>
-
-<style lang="scss">
-.home {
-  .logo {
-    display: block;
-    width: 620px;
-    height: 280px;
-    margin: 10px auto 10px;
-  }
-  .link {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
-    margin: 18px auto;
-    .btn {
-      display: block;
-      width: 150px;
-      height: 50px;
-      line-height: 50px;
-      padding: 0 5px;
-      margin: 0 30px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 16px;
-      white-space: nowrap;
-      text-decoration: none;
-      cursor: pointer;
-      &.start {
-        background-color: #fd0404;
-        color: #ffffff;
-        &:hover {
-          background-color: #ec2e2e;
-        }
-      }
-      &.star {
-        background-color: #ffffff;
-        color: #fd0404;
-        &:hover {
-          background-color: #f3f3f3;
-        }
-      }
-    }
-  }
-}
-</style>
