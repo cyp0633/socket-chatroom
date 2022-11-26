@@ -7,8 +7,6 @@ import (
 
 func init() {
 	c := cron.New()
-	// c.AddFunc("@every 4s", tryUser)
-	// time.Sleep(500 * time.Millisecond) // 防止命令执行撞车
 	c.AddFunc("@every 2s", tryPull)
 	c.Start()
 }
@@ -17,11 +15,5 @@ func init() {
 func tryPull() {
 	if conn != nil {
 		DoPull()
-	}
-}
-
-func tryUser() {
-	if conn != nil {
-		DoUser()
 	}
 }
