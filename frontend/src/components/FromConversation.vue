@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NAvatar, NCard } from 'naive-ui'
+import { NAvatar, NCard,NP } from 'naive-ui'
 import ConversationBubbleVue from "./ConversationBubble.vue";
 interface props {
     name: string;
@@ -15,7 +15,7 @@ const props = defineProps<props>()
         </div>
         <div class="flex">
             <conversation-bubble-vue class="max-w-3xl mx-4" placement="right-end">
-                <n-p>{{ msg }}</n-p>
+                {{ msg }}
             </conversation-bubble-vue>
         </div>
     </div>

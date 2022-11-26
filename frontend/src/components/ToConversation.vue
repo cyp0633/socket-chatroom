@@ -14,7 +14,7 @@ defineProps<{
         </div>
         <div class="flex">
             <conversation-bubble-vue class="max-w-3xl mx-4" placement="left-end">
-                <n-p>{{ msg }}</n-p>
+                {{ msg }}
             </conversation-bubble-vue>
         </div>
     </div>
