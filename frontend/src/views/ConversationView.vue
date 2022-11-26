@@ -15,73 +15,7 @@ const route = useRoute();
 const ip = route.params.ip as string;
 const name = ip.match(/[0-9]{1,3}$/)![0];
 const ipStore = useIpStore();
-const msg = ref<Message[]>([
-    {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    },
-    {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    }, {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    }, {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    }, {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    }, {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    }, {
-        type: "from",
-        content: "Hello, World!",
-        name: "Alice",
-    },
-    {
-        type: "to",
-        content: "Hello, Alice!",
-        name: "Bob",
-    },
-]);
+const msg = ref<Message[]>([]);
 
 function sendMsg(message: string) {
     msg.value.push({

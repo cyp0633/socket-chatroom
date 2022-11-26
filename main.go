@@ -29,12 +29,10 @@ func main() {
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
 		Title:             "socket-chatroom",
-		Width:             900,
-		Height:            600,
+		Width:             1280,
+		Height:            720,
 		MinWidth:          900,
-		MinHeight:         600,
-		MaxWidth:          1200,
-		MaxHeight:         800,
+		MinHeight:         720,
 		DisableResize:     false,
 		Fullscreen:        false,
 		Frameless:         false,
