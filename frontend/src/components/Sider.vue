@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import ConversationItemVue from './ConversationItem.vue';
 import { reactive, ref, onMounted } from 'vue';
 import { FetchClients } from '../../wailsjs/go/main/App';
-const users = reactive([])
+const users = reactive([] as string[]);
 const router = useRouter();
 
 onMounted(async () => {
