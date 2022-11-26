@@ -137,3 +137,30 @@ func DoExit() {
 	Logger.Info("Closed connection")
 	conn = nil
 }
+
+var userRegex = regexp.MustCompile(`[0-9]+ USERS(.|\n)*END`)
+
+func DoUser() {
+	c := *conn
+	str := "USER"
+	_, err := c.Write([]byte(str))
+	if err != nil {
+		Logger.Error("Failed to send USER", zap.Error(err))
+	}
+
+	buf := make([]byte, 1024)
+	n, err := c.Read(buf)
+	if err != nil || !userRegex.MatchString(string(buf[:n])) {
+		Logger.Error("Failed to receive USER reply", zap.String("msg", string(buf)), zap.Error(err))
+	}
+
+	users := strings.Split(string(buf[:n]), "\n")
+	tempClients := []string{}
+	for i, user := range users {
+		if user == "END" || user == "" || i == 0 {
+			continue
+		}
+		tempClients = append(tempClients, user)
+	}
+	Clients = tempClients
+}

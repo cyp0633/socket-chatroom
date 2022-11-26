@@ -4,7 +4,8 @@ import "github.com/robfig/cron/v3"
 
 func init() {
 	c := cron.New()
-	c.AddFunc("@every 5s", tryPull)
+	c.AddFunc("@every 3s", tryPull)
+	c.AddFunc("@every 5s", tryUser)
 	c.Start()
 }
 
@@ -12,5 +13,11 @@ func init() {
 func tryPull() {
 	if conn != nil {
 		DoPull()
+	}
+}
+
+func tryUser() {
+	if conn != nil {
+		DoUser()
 	}
 }
