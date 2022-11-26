@@ -3,7 +3,8 @@ import FromConversationVue from "@/components/FromConversation.vue";
 import ToConversationVue from "@/components/ToConversation.vue";
 import SendVue from "@/components/Send.vue";
 import { FetchMessages, SendMessage } from "../../wailsjs/go/main/App";
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
+import { useIpStore } from '@/stores/counter';
 import { useRoute } from "vue-router";
 interface Message {
     type: string;
@@ -13,6 +14,7 @@ interface Message {
 const route = useRoute();
 const ip = route.params.ip as string;
 const name = ip.match(/[0-9]{1,3}$/)![0];
+const ipStore = useIpStore();
 const msg = ref<Message[]>([
     {
         type: "from",
@@ -92,7 +94,8 @@ function sendMsg(message: string) {
 }
 
 // 每五秒钟拉取消息
-onMounted(async () => {
+onUpdated(async () => {
+    ipStore.ip=ip;
     // execute every 5 seconds
     setInterval(async () => {
         const messages = await FetchMessages(ip);

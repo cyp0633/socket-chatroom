@@ -10,3 +10,11 @@ export const useCounterStore = defineStore("counter", () => {
 
   return { count, doubleCount, increment };
 });
+
+export const useIpStore = defineStore("ip", () => {
+  const ip = ref("");
+  function setIp(newIp: string) {
+    ip.value = newIp;
+  }
+  return { ip, setIp };
+});
