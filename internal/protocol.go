@@ -42,6 +42,9 @@ func DoHelo() {
 
 	clients := strings.Split(string(buf[8:n]), " ")
 	for _, client := range clients {
+		if client == "" {
+			continue
+		}
 		AddClient(client)
 	}
 	Logger.Info("Received client list", zap.Strings("clients", clients))
@@ -151,7 +154,7 @@ func DoUser() {
 	buf := make([]byte, 1024)
 	n, err := c.Read(buf)
 	if err != nil || !userRegex.MatchString(string(buf[:n])) {
-		Logger.Error("Failed to receive USER reply", zap.String("msg", string(buf)), zap.Error(err))
+		Logger.Error("Failed to receive USER reply", zap.String("msg", string(buf[:n])), zap.Error(err))
 	}
 
 	users := strings.Split(string(buf[:n]), "\n")
