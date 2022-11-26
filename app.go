@@ -57,9 +57,14 @@ func (a *App) FetchMessages(ip string) (messages []internal.Message) {
 			messages = append(messages, message)
 		}
 	}
+	// messages = internal.FakeMessages
 	return
 }
 
 func (a *App) FetchClients() []string {
 	return internal.Clients
+}
+
+func (a *App) SendMessage(to string, content string) {
+	internal.DoSend(content, to)
 }

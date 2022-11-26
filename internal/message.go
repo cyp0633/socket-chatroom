@@ -7,3 +7,21 @@ type Message struct {
 }
 
 var Messages = []Message{}
+
+var FakeMessages = []Message{
+	{
+		Type:    "from",
+		Content: "Hello",
+		Name:    "192.168.1.132",
+	},
+	{
+		Type:    "to",
+		Content: "Hi",
+		Name:    "",
+	},
+	{
+		Type:    "from",
+		Content: "How are you?",
+		Name:    "192.168.1.132",
+	},
+}

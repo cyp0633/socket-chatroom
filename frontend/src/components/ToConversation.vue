@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {NAvatar, NCard} from 'naive-ui'
+import { NAvatar, NCard, NP } from 'naive-ui'
 import ConversationBubbleVue from "./ConversationBubble.vue";
 defineProps<{
     name: string;

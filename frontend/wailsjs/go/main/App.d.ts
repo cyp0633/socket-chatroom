@@ -5,3 +5,5 @@ import {internal} from '../models';
 export function FetchClients():Promise<Array<string>>;
 
 export function FetchMessages(arg1:string):Promise<Array<internal.Message>>;
+
+export function SendMessage(arg1:string,arg2:string):Promise<void>;

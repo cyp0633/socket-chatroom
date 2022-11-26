@@ -9,3 +9,7 @@ export function FetchClients() {
 export function FetchMessages(arg1) {
   return window['go']['main']['App']['FetchMessages'](arg1);
 }
+
+export function SendMessage(arg1, arg2) {
+  return window['go']['main']['App']['SendMessage'](arg1, arg2);
+}
