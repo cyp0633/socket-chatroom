@@ -1,15 +1,14 @@
 package internal
 
 import (
-	"time"
 
 	"github.com/robfig/cron/v3"
 )
 
 func init() {
 	c := cron.New()
-	c.AddFunc("@every 4s", tryUser)
-	time.Sleep(500 * time.Millisecond) // 防止命令执行撞车
+	// c.AddFunc("@every 4s", tryUser)
+	// time.Sleep(500 * time.Millisecond) // 防止命令执行撞车
 	c.AddFunc("@every 2s", tryPull)
 	c.Start()
 }

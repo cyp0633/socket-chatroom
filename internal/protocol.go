@@ -61,9 +61,9 @@ func DoSend(msg string, to string) {
 	}
 
 	buf := make([]byte, 1024)
-	_, err = c.Read(buf)
+	n, err := c.Read(buf)
 	if err != nil || !sendReplyRegex.Match(buf) {
-		Logger.Error("Failed to receive SEND reply", zap.String("msg", string(buf)), zap.Error(err))
+		Logger.Error("Failed to receive SEND reply", zap.String("msg", string(buf[:n])), zap.Error(err))
 	}
 
 	Messages = append(Messages, Message{
@@ -74,7 +74,9 @@ func DoSend(msg string, to string) {
 	Logger.Info("Sent message successfully", zap.String("to", to), zap.String("message", msg))
 }
 
-var pullReplyRegex = regexp.MustCompile(`^LEN [0-9]+\n(FROM .+ CONTENT .+\n)*END`)
+var pullReplyRegex = regexp.MustCompile(`^[0-9]+ MESSAGES\n(FROM .+ CONTENT .+\n)*END PULL\n`)
+
+var pullUserRegex = regexp.MustCompile(`[0-9]+ USERS\n(.+\n)*END USER`)
 
 var fromRegex = regexp.MustCompile(`^FROM .+ CONTENT`)
 
@@ -91,14 +93,22 @@ func DoPull() {
 	buf := make([]byte, 4096) // 为消息留大点 buffer
 	n, err := c.Read(buf)
 	str = string(buf[:n])
-	if err != nil || !pullReplyRegex.MatchString(str) {
+	if err != nil {
 		Logger.Error("Failed to receive PULL reply", zap.Error(err))
+		return
+	}
+	if !pullReplyRegex.MatchString(str) {
+		Logger.Error("Not reply format", zap.String("msg", str))
+	}
+	if !pullUserRegex.MatchString(str) {
+		Logger.Error("Not user format", zap.String("msg", str))
 	}
 
-	// 解析消息
-	msg := strings.Split(str, "\n")
+	// 消息部分
+	replyPart := pullReplyRegex.FindString(str)
+	msg := strings.Split(replyPart, "\n")
 	for i, m := range msg {
-		if m == "END" || i == 0 || m == "" {
+		if m == "END PULL" || i == 0 || m == "" {
 			continue
 		}
 		temp := ""
@@ -113,6 +123,18 @@ func DoPull() {
 		})
 		Logger.Info("Received message", zap.String("from", from), zap.String("message", content))
 	}
+
+	// 用户部分
+	userPart := pullUserRegex.FindString(str)
+	users := strings.Split(userPart, "\n")
+	tempClients := []string{}
+	for i, user := range users {
+		if user == "END USER" || user == "" || i == 0 {
+			continue
+		}
+		tempClients = append(tempClients, user)
+	}
+	Clients = tempClients
 }
 
 var exitRegex = regexp.MustCompile(`^OK`)
